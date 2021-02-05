@@ -1,0 +1,44 @@
+picture img {
+  width: 100%;
+  max-height: 550px;
+}
+.area-list {
+  max-width: 940px;
+  margin: 60px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.area {
+  width: 45%;
+  height: 100px;
+  display: flex;
+}
+.area h3 {
+  margin-left: 10px;
+}
+.area p {
+  margin-left: 10px;
+  font-size: 0.8rem;
+}
+.area picture {
+  position: relative;
+}
+.area picture a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+}
+.area picture img {
+  width: 64px;
+  height: 64px;
+  border-radius: 5px;
+}
+
+@media screen and(min-width: 1024px) {
+  .area {
+    width: 25%;
+  }
+}
