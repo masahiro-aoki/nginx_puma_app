@@ -15,6 +15,20 @@ set :keep_releases, 5
 set :rbenv_ruby, '2.7.2'
 set :log_level, :debug
 
+set :bundle_path, -> { shared_path.join('vendor/bundle') }
+
+set :puma_bind,       "unix://#{shared_path}/tmp/sockets/#{fetch(:application)}-puma.sock"
+set :puma_state,      "#{shared_path}/tmp/pids/puma.state"
+set :puma_pid,        "#{shared_path}/tmp/pids/puma.pid"
+set :puma_access_log, "#{release_path}/log/puma.error.log"
+set :puma_error_log,  "#{release_path}/log/puma.access.log"
+set :ssh_options,     { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh/id_rsa.pub), port: 22 }
+set :puma_preload_app, true
+set :puma_worker_timeout, nil
+set :puma_init_active_record, true
+
+append :rbenv_map_bins, 'puma', 'pumactl'
+
 namespace :deploy do
   desc "Make sure local git is in sync with remote."
   task :confirm do
@@ -57,7 +71,7 @@ namespace :deploy do
   end
 
   before :starting, :confirm
-  after :publishing, :restart
+  # after :publishing, :restart
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
